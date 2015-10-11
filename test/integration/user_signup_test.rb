@@ -11,6 +11,19 @@ class UserSignupTest < ActionDispatch::IntegrationTest
                                             password_confirmation: "password"}
     end
     assert_template 'users/show'
+    assert_equal flash[:success], 'Welcome to the Microposts App!', 'Successful sign-up message should have been here'
   end
 
+  test 'invalid signup information' do
+    get signup_path
+    assert_no_difference 'User.count' do
+      post users_path, user: {name: "Invalid User",
+                     email: 'invaliduser@gmail.com',
+                     password: 'foo',
+                     password_confirmation: 'bar'}
+    end
+    assert_template 'users/new'
+    assert_select 'div#error-explanation'
+    assert_select 'div.alert-danger'
+  end
 end
