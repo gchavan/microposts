@@ -12,6 +12,7 @@ class UserSignupTest < ActionDispatch::IntegrationTest
     end
     assert_template 'users/show'
     assert_equal flash[:success], 'Welcome to the Microposts App!', 'Successful sign-up message should have been here'
+    assert is_logged_in?
   end
 
   test 'invalid signup information' do
